@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.16)
+project(PathFinding C)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+find_package(SDL3 REQUIRED CONFIG)
+
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
+     "${CMAKE_CURRENT_SOURCE_DIR}/src/*.c")
+
+add_executable(PathFinding ${SOURCES})
+target_include_directories(PathFinding PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_link_libraries(PathFinding PRIVATE SDL3::SDL3)
+
+# Copia SDL3.dll accanto all'eseguibile a ogni build (necessario su Windows)
+add_custom_command(TARGET PathFinding POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "$<TARGET_FILE:SDL3::SDL3>"
+            "$<TARGET_FILE_DIR:PathFinding>"
+)
