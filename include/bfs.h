@@ -1,7 +1,7 @@
 #pragma once
 #include "queue.h"
 
-typedef struct {
+typedef struct { //STRUCT TO KEEP PROGRESS FROM ONE STEP TO ANOTHER
 	int finished;
 	Queue q;
 } BFS_State;

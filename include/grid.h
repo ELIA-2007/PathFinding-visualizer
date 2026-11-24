@@ -11,7 +11,7 @@ typedef enum {
 	visited,
 	path
 } Cell;
-typedef Cell grid[COLS][ROWS];
+typedef Cell grid[COLS][ROWS]; //GRID = BIDIMENTIONAL ARRAY OF CELLS(ENUMS)
 
 static SDL_Color cellColor(Cell c);
 void initGrid(grid grd, int winWidth, int windHeight, float *cellWidth, float *cellHeight, int *startX, int *startY);

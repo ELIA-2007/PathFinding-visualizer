@@ -1,7 +1,7 @@
 #include "grid.h"
 #include <stdlib.h>
 #include <stdio.h>
-
+//GET COLOR BASED ON CELL TYPE
 static SDL_Color cellColor(Cell c) {
     switch (c) {
         case start:   return (SDL_Color){0, 255, 0, 255};
@@ -20,7 +20,7 @@ void resetWalls(grid grd) {
     		if (grd[x][y] == wall)
     		grd[x][y] = empty;
 }
-
+//CHOSE OTHER RANDOM STARTING AND ENDING CELLS
 void resetStartEndCells(grid grd, int *startX, int *startY) {
 	//RANDOMIZE START AND END CELLS
 	int start_x;
@@ -32,7 +32,7 @@ void resetStartEndCells(grid grd, int *startX, int *startY) {
 	start_y = rand() % ROWS;
 	end_x = rand() % COLS;
 	end_y = rand() % ROWS;
-	} while (grd[start_x][start_y] == wall || grd[end_x][end_y] == wall);
+	} while (grd[start_x][start_y] == wall || grd[end_x][end_y] == wall); //START AND END CAN'T BE WALLS
 
 	for (int x = 0; x < COLS; x++)
     	for (int y = 0; y < ROWS; y++)
@@ -54,7 +54,7 @@ void initGrid(grid grd, int windWidth, int windHeight, float *cellWidth, float *
     resetStartEndCells(grd, startX, startY);
 	resetWalls(grd);
 }
-
+//DRAW
 void drawGrid(grid grd, SDL_Renderer *renderer, int windWidth, int windHeight, float cellWidth, float cellHeight) {
 	//DRAW EACH CELL INDIVIDUALLY
 	float deltaY = (windHeight - (windHeight * 0.8f)) / 2;
@@ -63,14 +63,14 @@ void drawGrid(grid grd, SDL_Renderer *renderer, int windWidth, int windHeight, f
 
         SDL_FRect rect = {x * cellWidth, y * cellHeight + deltaY, cellWidth, cellHeight};
 
-        //SET COLOR BASED ON CELLS IDENTITY
+        //SET COLOR BASED ON CELLS TYPES AND DRAW
         SDL_Color col = cellColor(grd[x][y]);
         SDL_SetRenderDrawColor(renderer, col.r, col.g, col.b, col.a);
     	SDL_RenderFillRect(renderer, &rect);
     	}
 	}
 
-	//DRAW LINES
+	//DRAW GRID LINES
 	for (int i=0;i<COLS;i++) {
 		SDL_FRect line = {(float)i * cellWidth, 0 + deltaY, 3.0f, windHeight - 2 * deltaY};
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -82,7 +82,7 @@ void drawGrid(grid grd, SDL_Renderer *renderer, int windWidth, int windHeight, f
     	SDL_RenderFillRect(renderer, &line);
 	}
 }
-
+//RETURN CELL HOVERED BY MOUSE
 Cell* checkMouseCell(grid grd, int windWidth, int windHeight, float mouseX, float mouseY) {
 	Cell *hovered;
 	float deltaY = (windHeight - (windHeight * 0.8f)) / 2;

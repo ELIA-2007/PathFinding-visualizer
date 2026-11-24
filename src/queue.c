@@ -17,7 +17,7 @@ void enqueue(Queue *q, Node nd) {
 
 void dequeue(Queue *q) {
     if (isEmpty(q)) {
-        printf("Coda vuota, impossibile rimuovere\n");
+        printf("Queue empty, impossibile to remove!\n");
         return;
     }
     q->front++;
@@ -25,8 +25,8 @@ void dequeue(Queue *q) {
 
 Node* peek(Queue *q) {
     if (isEmpty(q)) {
-    	printf("Coda vuota, impossibile leggere\n");
-        return &(Node){67, 67};
+    	printf("Queue empty, impossibile to read!\n");
+        return &(Node){67, 67}; //RETURN DEFAULT ERROR VALUE (JUST PRAY THIS DOES NOT FAIL)
     }
     return &q->nodes[q->front + 1];
 }

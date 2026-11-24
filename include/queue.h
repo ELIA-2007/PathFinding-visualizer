@@ -1,13 +1,13 @@
 #pragma once
 #include "grid.h"
 
-typedef struct Node{
+typedef struct Node{ //BACKWARD LINKED LIST POINTING TO ITS PARENT
 	int x;
 	int y;
 	struct Node *parent;
 } Node;
 
-typedef struct {
+typedef struct { //MOST BASIC "FIFO" QUEUE EVER
 	Node nodes[ROWS * COLS];
 	int front;
 	int rear;

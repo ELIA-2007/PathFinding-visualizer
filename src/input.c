@@ -1,4 +1,5 @@
 #include "input.h"
+//SELF-EVIDENT FUNCTIONS
 
 void putWalls(grid grd, float windowWidth, float windowHeight, float mouseX, float mouseY) {
 	Cell *hovered = checkMouseCell(grd, windowWidth, windowHeight, mouseX, mouseY);

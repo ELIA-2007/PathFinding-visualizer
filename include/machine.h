@@ -14,8 +14,8 @@
 
 typedef int BOOL;
 
-typedef struct {
-	SDL_Window *window;
+typedef struct { //STRUCT THAT STORES EVERY VARIABLE (YES I LIKE C++ CLASSES)
+    SDL_Window *window;
     SDL_Renderer *renderer;
     Uint64 lastBFS;
     Uint64 stepDelay;
@@ -24,10 +24,11 @@ typedef struct {
     float cellWidth, cellHeight, mouseX, mouseY;
     BOOL running, puttingWalls, removingWalls, BFSRunning;
 
-	grid grd;
+    grid grd;
     BFS_State BFSstate;
 } Machine;
 
+//FUNCTIONS
 BOOL initMachine(Machine *mcn);
 void machineHandleEvents(Machine *mcn);
 void machineUpdate(Machine *mcn);
