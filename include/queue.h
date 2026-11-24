@@ -2,17 +2,14 @@
 #include "grid.h"
 
 typedef struct Node{ //BACKWARD LINKED LIST POINTING TO ITS PARENT
-	int x;
-	int y;
+	int x, y;
 	struct Node *parent;
 } Node;
 
 typedef struct { //MOST BASIC "FIFO" QUEUE EVER
 	Node nodes[ROWS * COLS];
-	int front;
-	int rear;
+	int front, rear;
 } Queue;
-
 
 void initQueue(Queue *q);
 int isEmpty(Queue *q);

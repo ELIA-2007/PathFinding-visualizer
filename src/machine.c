@@ -76,7 +76,7 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
                         break;
                     case SDLK_RETURN:
                         if (!mcn->BFSRunning) {
-                            initBFS(&mcn->BFSstate, mcn->grd, mcn->startX, mcn->startY);
+                            initBFS(&mcn->stateBFS, mcn->grd, mcn->startX, mcn->startY);
                             mcn->BFSRunning = true;
                             mcn->lastBFS = SDL_GetTicks();
                         }
@@ -99,7 +99,7 @@ void machineUpdate(Machine *mcn) {
     if (mcn->BFSRunning) {
         Uint64 now = SDL_GetTicks();
         if (now - mcn->lastBFS >= mcn->stepDelay) {
-            mcn->BFSRunning = bfs(mcn->grd, &mcn->BFSstate);
+            mcn->BFSRunning = bfs(mcn->grd, &mcn->stateBFS);
             mcn->lastBFS = now;
         }
     }

@@ -20,6 +20,13 @@ void resetWalls(grid grd) {
     		if (grd[x][y] == wall)
     		grd[x][y] = empty;
 }
+
+void resetVisited(grid grd) {
+	for (int x = 0; x < COLS; x++)
+    	for (int y = 0; y < ROWS; y++)
+    		if (grd[x][y] == visited || grd[x][y] == path)
+    		grd[x][y] = empty;
+}
 //CHOSE OTHER RANDOM STARTING AND ENDING CELLS
 void resetStartEndCells(grid grd, int *startX, int *startY) {
 	//RANDOMIZE START AND END CELLS

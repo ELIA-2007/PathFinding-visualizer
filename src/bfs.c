@@ -1,18 +1,15 @@
 #include "bfs.h"
 #include <stdio.h>
 //INIT STATE STRUCT AND GET STARTING CELLS
-void initBFS(BFS_State *state, grid grd, int startX, int startY) {
+void initBFS(BFSState *state, grid grd, int startX, int startY) {
     initQueue(&state->q);
-    Node start = (Node){startX, startY, NULL};
+    Node start = (Node){startX, startY, 0, NULL}; //SETTING f TO 0 BECAUSE THIS ALGORITHM DOES NOT USE IT
     enqueue(&state->q, start);
     state->finished = 0;
-    for (int x = 0; x < COLS; x++) //RESETTING VISITED CELLS (I KNOW I SHOULD BE DOING THIS IN A GRID FUNCTION)
-    	for (int y = 0; y < ROWS; y++)
-    		if (grd[x][y] == visited || grd[x][y] == path)
-    		grd[x][y] = empty;
+    resetVisited(grd);
 }
 
-int bfs(grid grd, BFS_State *state) { //STEPS (RETURN 0 IF FINISHED, 1 IF NOT)
+int bfs(grid grd, BFSState *state) { //STEPS (RETURN 0 IF FINISHED, 1 IF NOT)
 	if (isEmpty(&state->q) || state->finished == 1) return 0;
 
 	//POSSILE MOVES (RIGHT LEFT UP DOWN)

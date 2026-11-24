@@ -25,7 +25,7 @@ typedef struct { //STRUCT THAT STORES EVERY VARIABLE (YES I LIKE C++ CLASSES)
     BOOL running, puttingWalls, removingWalls, BFSRunning;
 
     grid grd;
-    BFS_State BFSstate;
+    BFSState stateBFS;
 } Machine;
 
 //FUNCTIONS
