@@ -9,7 +9,7 @@ BOOL initMachine(Machine *mcn) {
     mcn->removingWalls = false;
     mcn->BFSRunning = false;
 
-    srand((unsigned int)time(NULL)); //SET RANDOM SEED
+    srand((unsigned int)time(NULL)); //SET RANDOM SEED 
 
     //INIT SDL3 VIDEO
     if (!SDL_Init(SDL_INIT_VIDEO)) {
