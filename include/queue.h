@@ -1,20 +1,21 @@
+#pragma once
 #include "grid.h"
 
-typedef struct node{
+typedef struct Node{
 	int x;
 	int y;
-	struct node *parent;
-} node;
+	struct Node *parent;
+} Node;
 
 typedef struct {
-	node nodes[ROWS * COLS];
+	Node nodes[ROWS * COLS];
 	int front;
 	int rear;
-} queue;
+} Queue;
 
 
-void initQueue(queue *q);
-int isEmpty(queue *q);
-void enqueue(queue *q, node _node);
-void dequeue(queue *q);
-node* peek(queue *q);
+void initQueue(Queue *q);
+int isEmpty(Queue *q);
+void enqueue(Queue *q, Node nd);
+void dequeue(Queue *q);
+Node* peek(Queue *q);

@@ -10,11 +10,12 @@ typedef enum {
 	wall,
 	visited,
 	path
-} cell;
-typedef cell grid[COLS][ROWS];
+} Cell;
+typedef Cell grid[COLS][ROWS];
 
-void initGrid(grid _grid, int winWidth, int windHeight, float *cell_width, float *cell_height, int *startX, int *startY);
-void drawGrid(grid _grid, SDL_Renderer *renderer, int windWidth, int windHeight, float cell_width, float cell_height);
-void resetWalls(grid _grid);
-void resetStartEndCells(grid _grid, int *startX, int *startY);
-cell* checkMouseCell(grid _grid, int winWidth, int winHeight, float mouseX, float mouseY);
+static SDL_Color cellColor(Cell c);
+void initGrid(grid grd, int winWidth, int windHeight, float *cellWidth, float *cellHeight, int *startX, int *startY);
+void drawGrid(grid grd, SDL_Renderer *renderer, int windWidth, int windHeight, float cellWidth, float cellHeight);
+void resetWalls(grid grd);
+void resetStartEndCells(grid grd, int *startX, int *startY);
+Cell* checkMouseCell(grid grd, int winWidth, int winHeight, float mouseX, float mouseY);

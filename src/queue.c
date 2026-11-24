@@ -1,21 +1,21 @@
 #include "queue.h"
 #include <stdio.h>
 
-void initQueue(queue *q) {
+void initQueue(Queue *q) {
 	q->front = -1;
 	q->rear = 0;
 }
 
-int isEmpty(queue *q) {
+int isEmpty(Queue *q) {
 	return (q->front == q->rear -1) ? 1 : 0;
 }
 
-void enqueue(queue *q, node _node) {
-	q->nodes[q->rear] = _node;
+void enqueue(Queue *q, Node nd) {
+	q->nodes[q->rear] = nd;
 	q->rear++;
 }
 
-void dequeue(queue *q) {
+void dequeue(Queue *q) {
     if (isEmpty(q)) {
         printf("Coda vuota, impossibile rimuovere\n");
         return;
@@ -23,10 +23,10 @@ void dequeue(queue *q) {
     q->front++;
 }
 
-node* peek(queue *q) {
+Node* peek(Queue *q) {
     if (isEmpty(q)) {
     	printf("Coda vuota, impossibile leggere\n");
-        return &(node){67, 67};
+        return &(Node){67, 67};
     }
     return &q->nodes[q->front + 1];
 }

@@ -3,6 +3,6 @@
 #include "grid.h"
 
 
-void putWalls(grid _grid, float windowWidth, float windowHeight, float mouseX, float mouseY);
-void removeWalls(grid _grid, float windowWidth, float windowHeight, float mouseX, float mouseY);
-void handleInputs(grid _grid, float windowWidth, float windowHeight, float mouseX, float mouseY, int puttingWalls, int removingWalls);
+void putWalls(grid grd, float windowWidth, float windowHeight, float mouseX, float mouseY);
+void removeWalls(grid grd, float windowWidth, float windowHeight, float mouseX, float mouseY);
+void handleInputs(grid grd, float windowWidth, float windowHeight, float mouseX, float mouseY, int puttingWalls, int removingWalls);
