@@ -28,7 +28,7 @@ void resetVisited(grid grd) {
     		grd[x][y] = empty;
 }
 //CHOSE OTHER RANDOM STARTING AND ENDING CELLS
-void resetStartEndCells(grid grd, int *startX, int *startY) {
+void resetStartEndCells(grid grd, int *startX, int *startY, int *endX, int *endY) {
 	//RANDOMIZE START AND END CELLS
 	int start_x;
 	int start_y;
@@ -50,15 +50,17 @@ void resetStartEndCells(grid grd, int *startX, int *startY) {
     grd[end_x][end_y] = end;
     *startX = start_x;
     *startY = start_y;
+    *endX = end_x;
+    *endY = end_y;
 }
 
-void initGrid(grid grd, int windWidth, int windHeight, float *cellWidth, float *cellHeight, int *startX, int *startY) {
+void initGrid(grid grd, int windWidth, int windHeight, float *cellWidth, float *cellHeight, int *startX, int *startY, int *endX, int *endY) {
 	//SCALE CELLS DIMENSION
 	*cellWidth = windWidth * 0.8f / COLS;
 	*cellHeight = windHeight * 0.8f / ROWS;
 
 	//INITIALIZE CELLS
-    resetStartEndCells(grd, startX, startY);
+    resetStartEndCells(grd, startX, startY, endX, endY);
 	resetWalls(grd);
 }
 //DRAW

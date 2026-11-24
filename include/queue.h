@@ -1,18 +1,18 @@
 #pragma once
 #include "grid.h"
 
-typedef struct Node{ //BACKWARD LINKED LIST POINTING TO ITS PARENT
+typedef struct BFSNode{ //BACKWARD LINKED LIST POINTING TO ITS PARENT
 	int x, y;
-	struct Node *parent;
-} Node;
+	struct BFSNode *parent;
+} BFSNode;
 
 typedef struct { //MOST BASIC "FIFO" QUEUE EVER
-	Node nodes[ROWS * COLS];
+	BFSNode nodes[ROWS * COLS];
 	int front, rear;
 } Queue;
 
 void initQueue(Queue *q);
-int isEmpty(Queue *q);
-void enqueue(Queue *q, Node nd);
+BOOL isEmpty(Queue *q);
+void enqueue(Queue *q, BFSNode nd);
 void dequeue(Queue *q);
-Node* peek(Queue *q);
+BFSNode* peek(Queue *q);

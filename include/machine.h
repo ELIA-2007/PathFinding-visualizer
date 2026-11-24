@@ -1,31 +1,30 @@
 #pragma once
-#define STEP_DELAY 1
-#define TRUE 1
-#define FALSE 0
 
 #include "settings.h"
 #include "input.h"
 #include "grid.h"
 #include "queue.h"
+#include "priorityqueue.h"
 #include "bfs.h"
+#include "astar.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL3/SDL.h>
 
-typedef int BOOL;
-
 typedef struct { //STRUCT THAT STORES EVERY VARIABLE (YES I LIKE C++ CLASSES)
     SDL_Window *window;
     SDL_Renderer *renderer;
-    Uint64 lastBFS;
+    Uint64 lastStep;
     Uint64 stepDelay;
 
-    int windowWidth, windowHeight, startX, startY;
+    int windowWidth, windowHeight, startX, startY, endX, endY;
     float cellWidth, cellHeight, mouseX, mouseY;
-    BOOL running, puttingWalls, removingWalls, BFSRunning;
+    BOOL running, puttingWalls, removingWalls, algRunning;
 
     grid grd;
+    Algorithm algorithm;
     BFSState stateBFS;
+    AstarState stateASTAR;
 } Machine;
 
 //FUNCTIONS

@@ -4,12 +4,14 @@ BOOL initMachine(Machine *mcn) {
     *mcn = (Machine){0}; //INIT MACHINE
     //INIT BOOL VARIABLES
     mcn->stepDelay = STEP_DELAY;
-    mcn->running = true;
-    mcn->puttingWalls = false;
-    mcn->removingWalls = false;
-    mcn->BFSRunning = false;
+    mcn->running = TRUE;
+    mcn->puttingWalls = FALSE;
+    mcn->removingWalls = FALSE;
+    mcn->algRunning = FALSE;
+    mcn->algorithm = ASTAR;
+    mcn->lastStep = SDL_GetTicks();
 
-    srand((unsigned int)time(NULL)); //SET RANDOM SEED 
+    srand((unsigned int)time(NULL)); //SET RANDOM SEED
 
     //INIT SDL3 VIDEO
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -25,9 +27,8 @@ BOOL initMachine(Machine *mcn) {
     //SCALE BASED ON DISPLAY SIZE
     SDL_GetWindowSize(mcn->window, &mcn->windowWidth, &mcn->windowHeight);
     initGrid(mcn->grd, mcn->windowWidth, mcn->windowHeight,
-             &mcn->cellWidth, &mcn->cellHeight, &mcn->startX, &mcn->startY);
+             &mcn->cellWidth, &mcn->cellHeight, &mcn->startX, &mcn->startY, &mcn->endX, &mcn->endY);
 
-    mcn->lastBFS = SDL_GetTicks();
     return 0;
 }
 void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
@@ -37,16 +38,16 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_EVENT_QUIT:
-                mcn->running = false;
+                mcn->running = FALSE;
                 break;
 
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
                 switch (event.button.button) {
                     case SDL_BUTTON_LEFT:
-                        mcn->puttingWalls = true;
+                        mcn->puttingWalls = TRUE;
                         break;
                     case SDL_BUTTON_RIGHT:
-                        mcn->removingWalls = true;
+                        mcn->removingWalls = TRUE;
                         break;
                     default:
                         break;
@@ -56,10 +57,10 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
             case SDL_EVENT_MOUSE_BUTTON_UP:
                 switch (event.button.button) {
                     case SDL_BUTTON_LEFT:
-                        mcn->puttingWalls = false;
+                        mcn->puttingWalls = FALSE;
                         break;
                     case SDL_BUTTON_RIGHT:
-                        mcn->removingWalls = false;
+                        mcn->removingWalls = FALSE;
                         break;
                     default:
                         break;
@@ -72,13 +73,24 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
                         resetWalls(mcn->grd);
                         break;
                     case SDLK_SPACE:
-                        resetStartEndCells(mcn->grd, &mcn->startX, &mcn->startY);
+                        resetStartEndCells(mcn->grd, &mcn->startX, &mcn->startY, &mcn->endX, &mcn->endY);
                         break;
                     case SDLK_RETURN:
-                        if (!mcn->BFSRunning) {
-                            initBFS(&mcn->stateBFS, mcn->grd, mcn->startX, mcn->startY);
-                            mcn->BFSRunning = true;
-                            mcn->lastBFS = SDL_GetTicks();
+                        if (!mcn->algRunning) {
+                            switch (mcn->algorithm) {
+                                case BFS:
+                                    initBFS(&mcn->stateBFS, mcn->grd, mcn->startX, mcn->startY);
+                                    break;
+                                case ASTAR:
+                                    mcn->stateASTAR = (AstarState){0};
+                                    initAstar(&mcn->stateASTAR, mcn->grd, mcn->startX, mcn->startY);
+                                    break;
+                                default:
+                                    printf("No algorithm detected!\n");
+                                    break;
+                            }
+                            mcn->algRunning = TRUE;
+                            mcn->lastStep = SDL_GetTicks();
                         }
                         break;
                     default:
@@ -96,11 +108,21 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
 }
 //UPDATE GAME TICKS AND ALGORITHM STEPS
 void machineUpdate(Machine *mcn) {
-    if (mcn->BFSRunning) {
+    if (mcn->algRunning) {
         Uint64 now = SDL_GetTicks();
-        if (now - mcn->lastBFS >= mcn->stepDelay) {
-            mcn->BFSRunning = bfs(mcn->grd, &mcn->stateBFS);
-            mcn->lastBFS = now;
+        if (now - mcn->lastStep >= mcn->stepDelay) {
+            switch (mcn->algorithm) {
+                case BFS:
+                    mcn->algRunning = bfs(mcn->grd, &mcn->stateBFS);
+                    break;
+                case ASTAR:
+                    mcn->algRunning = aStar(mcn->grd, &mcn->stateASTAR, mcn->endX, mcn->endY);
+                    break;
+                default:
+                    printf("No algorithm detected!\n");
+                    break;
+            }
+            mcn->lastStep = now;
         }
     }
 }
