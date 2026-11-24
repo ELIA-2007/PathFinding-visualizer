@@ -1,9 +1,10 @@
+#pragma once
 #include "queue.h"
 
-typedef struct {
-	int finished;
-	queue q;
-} BFS_State;
+typedef struct { //STRUCT TO KEEP PROGRESS FROM ONE STEP TO ANOTHER
+	BOOL finished;
+	Queue q;
+} BFSState;
 
-void initBFS(BFS_State *state, grid _grid, int startX, int startY);
-int bfs(grid _grid, BFS_State *state);
+void initBFS(BFSState *state, grid grd, int startX, int startY);
+BOOL bfs(grid grd, BFSState *state);

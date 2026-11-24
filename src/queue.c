@@ -1,32 +1,34 @@
 #include "queue.h"
 #include <stdio.h>
+#include <stdio.h>
 
-void initQueue(queue *q) {
+void initQueue(Queue *q) {
+    memset(q->nodes, 0, ROWS * COLS);
 	q->front = -1;
 	q->rear = 0;
 }
 
-int isEmpty(queue *q) {
-	return (q->front == q->rear -1) ? 1 : 0;
+BOOL isEmpty(Queue *q) {
+	return (q->front == q->rear -1) ? TRUE : FALSE;
 }
 
-void enqueue(queue *q, node _node) {
-	q->nodes[q->rear] = _node;
+void enqueue(Queue *q, BFSNode nd) {
+	q->nodes[q->rear] = nd;
 	q->rear++;
 }
 
-void dequeue(queue *q) {
+void dequeue(Queue *q) {
     if (isEmpty(q)) {
-        printf("Coda vuota, impossibile rimuovere\n");
+        printf("Queue empty, impossibile to remove!\n");
         return;
     }
     q->front++;
 }
 
-node* peek(queue *q) {
+BFSNode* peek(Queue *q) {
     if (isEmpty(q)) {
-    	printf("Coda vuota, impossibile leggere\n");
-        return &(node){67, 67};
+    	printf("Queue empty, impossibile to read!\n");
+        return &(BFSNode){67, 67}; //RETURN DEFAULT ERROR VALUE (JUST PRAY THIS DOES NOT FAIL)
     }
     return &q->nodes[q->front + 1];
 }

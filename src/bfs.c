@@ -1,54 +1,48 @@
 #include "bfs.h"
 #include <stdio.h>
-
-void initBFS(BFS_State *state, grid _grid, int startX, int startY) {
+//INIT STATE STRUCT AND GET STARTING CELLS
+void initBFS(BFSState *state, grid grd, int startX, int startY) {
+	resetVisited(grd);
     initQueue(&state->q);
-    node start = (node){startX, startY, NULL};
-    enqueue(&state->q, start);
-    state->finished = 0;
-    for (int x = 0; x < COLS; x++)
-    	for (int y = 0; y < ROWS; y++)
-    		if (_grid[x][y] == visited || _grid[x][y] == path)
-    		_grid[x][y] = empty;
+    state->finished = FALSE;
+    BFSNode firstNode = (BFSNode){startX, startY, NULL};
+    enqueue(&state->q, firstNode);
 }
 
-int bfs(grid _grid, BFS_State *state) {
-	if (isEmpty(&state->q) || state->finished == 1) return 0;
+BOOL bfs(grid grd, BFSState *state) { //STEPS (RETURN 0 IF FINISHED, 1 IF NOT)
+	if (isEmpty(&state->q) || state->finished) return FALSE;
 
-	int moveRow[] = {-1, 1, 0, 0};
-	int moveCol[] = {0, 0, -1, 1};
+	//POSSILE MOVES (RIGHT LEFT UP DOWN)
+	int moveX[] = {-1, 1, 0, 0};
+	int moveY[] = {0, 0, -1, 1};
 
-	node *current = peek(&state->q);
-	node next;
+	//GET FIRST QUEUE NODE AND KICK THE LAST
+	BFSNode *current = peek(&state->q);
+	BFSNode next;
     dequeue(&state->q);
 
 	for (int i=0;i<4;i++) {
-		next.x = current->x + moveRow[i];
-		next.y = current->y + moveCol[i];
-		next.parent = current;
+		next.x = current->x + moveX[i];
+		next.y = current->y + moveY[i];
+		next.parent = current; //SET PARENT OF THE NEXT CELL TO A POINTER TO THE CURRENT CELL
 		if (next.x >= 0 && next.x < COLS && next.y >= 0 && next.y < ROWS) {
-			cell *nextCell = &_grid[next.x][next.y];
+			Cell *nextCell = &grd[next.x][next.y];
 
-
-			if (*nextCell == empty) {
+			if (*nextCell == empty) { //IF ITS EMPTY ENQUEUE THAT AND MARK THAT AS VISITED
 				*nextCell = visited;
 				enqueue(&state->q, next);
 			}
-			else if (*nextCell == end) {
-				state->finished = 1;
+			else if (*nextCell == end) { //IF ITS THE TARGET SET FINISHED TO TRUE
+				state->finished = TRUE;
 			}
 		}
 	}
-	if (_grid[current->x][current->y] != start)
-		_grid[current->x][current->y] = visited;
 
-	if (state->finished == 1) {
-		while (_grid[current->x][current->y] != start) {
-    		_grid[current->x][current->y] = path;
+	if (state->finished) { //IF PATH IS FOUND SET PATH CELLS TO "PATH"
+		while (grd[current->x][current->y] != start) {
+    		grd[current->x][current->y] = path;
     		current = current->parent;
 		}
-		return 0;
 	}
-	else 
-		return 1;
+	return (!state->finished);
 }
