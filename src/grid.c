@@ -18,7 +18,7 @@ static SDL_Color cellColor(Cell c) {
 BOOL isMoveValid(grid grd, int x, int y, int move) {
 	BOOL result = TRUE;
 	//IF NEXT CELL IS NOT INSIDE THE GRID
-	if (x < 0 || x > COLS || y < 0 || y > ROWS || grd[x][y] == wall) result = FALSE;
+	if (x < 0 || x >= COLS || y < 0 || y >= ROWS || grd[x][y] == wall) result = FALSE;
 	switch (move) {
 		case 4:
 			if (grd[x - 1][y] == wall && grd[x][y - 1] == wall) result = FALSE;
