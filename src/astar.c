@@ -39,8 +39,7 @@ BOOL aStar(grid grd, AstarState *state, int endX, int endY) {
 	for (int i=0;i<8;i++) {
 		next.x = current.x + moveX[i];
 		next.y = current.y + moveY[i];
-		if (next.x < 0 || next.x > COLS || next.y < 0 && next.y < ROWS || grd[next.x][next.y] == wall) continue; //IF NEXT CELL IS NOT INSIDE THE GRID
-
+		if (!isMoveValid(grd, next.x, next.y, i)) continue;
 		nextG = state->g[current.x][current.y] + ((i < 4) ? 1.f : sqrtf(2.f));
 		if (nextG < state->g[next.x][next.y]) {//IF BETTER PATH TO THIS CELL IS FOUND
 			nextH = sqrt((float)pow(abs(next.x - endX), 2) + (float)pow(abs(next.y - endY), 2));

@@ -13,7 +13,7 @@ typedef enum {
 } Cell;
 typedef Cell grid[COLS][ROWS]; //GRID = BIDIMENTIONAL ARRAY OF CELLS(ENUMS)
 
-static SDL_Color cellColor(Cell c);
+BOOL isMoveValid(grid grd, int x, int y, int move);
 void initGrid(grid grd, int winWidth, int windHeight, float *cellWidth, float *cellHeight, int *startX, int *startY, int *endX, int *endY);
 void drawGrid(grid grd, SDL_Renderer *renderer, int windWidth, int windHeight, float cellWidth, float cellHeight);
 void resetWalls(grid grd);

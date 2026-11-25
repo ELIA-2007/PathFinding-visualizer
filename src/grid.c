@@ -9,9 +9,33 @@ static SDL_Color cellColor(Cell c) {
         case wall:    return (SDL_Color){200, 200, 200, 255};
         case visited: return (SDL_Color){100, 40, 100, 255};
         case path:    return (SDL_Color){100, 180, 180, 255};
-        case empty:
-        default:      return (SDL_Color){40, 40, 100, 255};
+        case empty:   return (SDL_Color){40, 40, 100, 255};
+        default:      return (SDL_Color){0, 0, 255, 255};
     }
+}
+
+//PREVENT THE ALGORITHM TO JUMP DIAGONALLY BETWEEN 2 WALLS
+BOOL isMoveValid(grid grd, int x, int y, int move) {
+	BOOL result = TRUE;
+	//IF NEXT CELL IS NOT INSIDE THE GRID
+	if (x < 0 || x > COLS || y < 0 || y > ROWS || grd[x][y] == wall) result = FALSE;
+	switch (move) {
+		case 4:
+			if (grd[x - 1][y] == wall && grd[x][y - 1] == wall) result = FALSE;
+			break;
+		case 5:
+			if (grd[x + 1][y] == wall && grd[x][y + 1] == wall) result = FALSE;
+			break;
+		case 6:
+			if (grd[x - 1][y] == wall && grd[x][y + 1] == wall) result = FALSE;
+			break;
+		case 7:
+			if (grd[x + 1][y] == wall && grd[x][y - 1] == wall) result = FALSE;
+			break;
+		default:
+			break;
+	}
+	return result;
 }
 
 void resetWalls(grid grd) {

@@ -1,5 +1,10 @@
 #include "machine.h"
 
+static void switchAlgorithm(Algorithm *alg) {
+    (*alg)++;
+    (*alg) = (*alg) % 2;
+}
+
 BOOL initMachine(Machine *mcn) {
     *mcn = (Machine){0}; //INIT MACHINE
     //INIT BOOL VARIABLES
@@ -8,7 +13,7 @@ BOOL initMachine(Machine *mcn) {
     mcn->puttingWalls = FALSE;
     mcn->removingWalls = FALSE;
     mcn->algRunning = FALSE;
-    mcn->algorithm = ASTAR;
+    mcn->algorithm = BFS;
     mcn->lastStep = SDL_GetTicks();
 
     srand((unsigned int)time(NULL)); //SET RANDOM SEED
@@ -69,6 +74,8 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
 
             case SDL_EVENT_KEY_DOWN:
                 switch (event.key.key) {
+                    case SDLK_A:
+                        switchAlgorithm(&mcn->algorithm);
                     case SDLK_BACKSPACE:
                         resetWalls(mcn->grd);
                         break;

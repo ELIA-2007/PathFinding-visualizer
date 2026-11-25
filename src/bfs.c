@@ -25,16 +25,15 @@ BOOL bfs(grid grd, BFSState *state) { //STEPS (RETURN 0 IF FINISHED, 1 IF NOT)
 		next.x = current->x + moveX[i];
 		next.y = current->y + moveY[i];
 		next.parent = current; //SET PARENT OF THE NEXT CELL TO A POINTER TO THE CURRENT CELL
-		if (next.x >= 0 && next.x < COLS && next.y >= 0 && next.y < ROWS) {
-			Cell *nextCell = &grd[next.x][next.y];
+		if (!isMoveValid(grd, next.x, next.y, i)) continue;
+		Cell *nextCell = &grd[next.x][next.y];
 
-			if (*nextCell == empty) { //IF ITS EMPTY ENQUEUE THAT AND MARK THAT AS VISITED
-				*nextCell = visited;
-				enqueue(&state->q, next);
-			}
-			else if (*nextCell == end) { //IF ITS THE TARGET SET FINISHED TO TRUE
-				state->finished = TRUE;
-			}
+		if (*nextCell == empty) { //IF ITS EMPTY ENQUEUE THAT AND MARK THAT AS VISITED
+			*nextCell = visited;
+			enqueue(&state->q, next);
+		}
+		else if (*nextCell == end) { //IF ITS THE TARGET SET FINISHED TO TRUE
+			state->finished = TRUE;
 		}
 	}
 
