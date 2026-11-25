@@ -50,21 +50,21 @@ void PQenqueue(PrioQueue *pq, AstarNode nd) {
     pq->nodes[pq->size++] = nd;
     heapifyUp(pq, pq->size - 1);
 }
-AstarNode* PQdequeue(PrioQueue *pq) {
+AstarNode PQdequeue(PrioQueue *pq) {
 	if (!pq->size) {
 		printf("Priority queue is empty\n");
-		return &(AstarNode){67, 67, 67}; //JUST HOPE THIS NEVER FAILS
+		return (AstarNode){67, 67, 67, 67}; //JUST HOPE THIS NEVER FAILS
 	}
 	AstarNode node = pq->nodes[0];
     pq->nodes[0] = pq->nodes[--pq->size];
     heapifyDown(pq, 0);
-    return &pq->nodes[0];
+    return node;
 
 }
-AstarNode* PQpeek(PrioQueue *pq) {
+AstarNode PQpeek(PrioQueue *pq) {
 	if (!pq->size) {
         printf("Priority queue is empty\n");
-        return &(AstarNode){67, 67, 67}; //JUST HOPE THIS NEVER FAILS
+        return (AstarNode){67, 67, 67, 67}; //JUST HOPE THIS NEVER FAILS
     }
-    return &pq->nodes[0];
+    return pq->nodes[0];
 }

@@ -1,10 +1,9 @@
 #pragma once
 #include "settings.h"
 
-typedef struct AstarNode {
+typedef struct {
 	int x, y;
 	float g, f;
-	struct AstarNode *parent;
 } AstarNode;
 
 typedef struct {
@@ -18,5 +17,5 @@ void swap(AstarNode *nd1, AstarNode *nd2);
 void heapifyUp(PrioQueue* pq, int index);
 void heapifyDown(PrioQueue* pq, int index);
 void PQenqueue(PrioQueue *pq, AstarNode nd);
-AstarNode* PQdequeue(PrioQueue *pq);
-AstarNode* PQpeek(PrioQueue *pq);
+AstarNode PQdequeue(PrioQueue *pq);
+AstarNode PQpeek(PrioQueue *pq);

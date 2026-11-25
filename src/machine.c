@@ -73,7 +73,7 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
                         resetWalls(mcn->grd);
                         break;
                     case SDLK_SPACE:
-                        resetStartEndCells(mcn->grd, &mcn->startX, &mcn->startY, &mcn->endX, &mcn->endY);
+                        if (!mcn->algRunning) resetStartEndCells(mcn->grd, &mcn->startX, &mcn->startY, &mcn->endX, &mcn->endY);
                         break;
                     case SDLK_RETURN:
                         if (!mcn->algRunning) {
