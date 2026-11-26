@@ -1,12 +1,26 @@
 #include "machine.h"
 
-static void switchAlgorithm(Algorithm *alg) {
+static void switchAlgorithm(Algorithm *alg, TTF_Text *algName) {
     *alg = (*alg + 1) % 2;
+    switch (*alg) {
+        case ASTAR:
+            TTF_SetTextString(algName, "ASTAR", 0);
+            break;
+        case BFS:
+            TTF_SetTextString(algName, "BFS", 0);
+            break;
+        default:
+            printf("No algorithm detected to show");
+            break;
+    }
 }
 
 BOOL initMachine(Machine *mcn) {
-    *mcn = (Machine){0}; //INIT MACHINE
-    //INIT BOOL VARIABLES
+    //INIT MACHINE
+    *mcn = (Machine){0};
+
+
+    //INIT VARIABLES AT DEFAULT VALUES
     mcn->stepDelay = STEP_DELAY;
     mcn->lastStep = SDL_GetTicks();
     mcn->algorithm = BFS;
@@ -14,24 +28,47 @@ BOOL initMachine(Machine *mcn) {
     mcn->puttingWalls = FALSE;
     mcn->removingWalls = FALSE;
     mcn->algRunning = FALSE;
+    mcn->stepsNum = 0;
+
 
     srand((unsigned int)time(NULL)); //SET RANDOM SEED
+
 
     //INIT SDL3 VIDEO
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         SDL_Log("Errore SDL_Init: %s", SDL_GetError());
         return 1;
     }
+    //INIT SDL3 TEXT RENDERING
+    TTF_Init();
     //CREATE WINDOW
     if (!SDL_CreateWindowAndRenderer("PathFinding", 0, 0, SDL_WINDOW_FULLSCREEN,
                                      &mcn->window, &mcn->renderer)) {
         SDL_Log("Errore finestra: %s", SDL_GetError());
         return 2;
     }
+    //INIT TEXT ENGINE
+    initText(&mcn->textEngine, &mcn->font, &mcn->renderer);
+
+
+    //INIT TEXTS
+    mcn->algText = TTF_CreateText(mcn->textEngine, mcn->font, "Algorithm: ", 0);
+    TTF_SetTextColor(mcn->algText, 255, 255, 255, 255);
+
+    mcn->algNameText = TTF_CreateText(mcn->textEngine, mcn->font, "BFS", 0);
+    TTF_SetTextColor(mcn->algNameText, 255, 255, 255, 255);
+
+    mcn->stepsText = TTF_CreateText(mcn->textEngine, mcn->font, "Steps: 0", 0);
+    TTF_SetTextColor(mcn->algText, 255, 255, 255, 255);
+
+
     //SCALE BASED ON DISPLAY SIZE
     SDL_GetWindowSize(mcn->window, &mcn->windowWidth, &mcn->windowHeight);
     initGrid(mcn->grd, mcn->windowWidth, mcn->windowHeight,
-             &mcn->cellWidth, &mcn->cellHeight, &mcn->startX, &mcn->startY, &mcn->endX, &mcn->endY);
+             &mcn->cellWidth, &mcn->cellHeight,
+             &mcn->startX, &mcn->startY,
+             &mcn->endX, &mcn->endY);
+
 
     return 0;
 }
@@ -74,7 +111,7 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
             case SDL_EVENT_KEY_DOWN:
                 switch (event.key.key) {
                     case SDLK_A:
-                        switchAlgorithm(&mcn->algorithm);
+                        switchAlgorithm(&mcn->algorithm, mcn->algNameText);
                         break;
                     case SDLK_BACKSPACE:
                         resetWalls(mcn->grd);
@@ -84,6 +121,7 @@ void machineHandleEvents(Machine *mcn) { //HANDLE INPUTS
                         break;
                     case SDLK_RETURN:
                         if (!mcn->algRunning) {
+                            mcn->stepsNum = 0;
                             switch (mcn->algorithm) {
                                 case BFS:
                                     initBFS(&mcn->stateBFS, mcn->grd, mcn->startX, mcn->startY);
@@ -120,15 +158,17 @@ void machineUpdate(Machine *mcn) {
         if (now - mcn->lastStep >= mcn->stepDelay) {
             switch (mcn->algorithm) {
                 case BFS:
-                    mcn->algRunning = bfs(mcn->grd, &mcn->stateBFS);
+                    mcn->algRunning = bfs(mcn->grd, &mcn->stateBFS, &mcn->stepsNum);
                     break;
                 case ASTAR:
-                    mcn->algRunning = aStar(mcn->grd, &mcn->stateASTAR, mcn->endX, mcn->endY);
+                    mcn->algRunning = aStar(mcn->grd, &mcn->stateASTAR, mcn->endX, mcn->endY, &mcn->stepsNum);
                     break;
                 default:
                     printf("No running algorithm detected!\n");
                     break;
             }
+            snprintf(mcn->stepsBuffer, sizeof(mcn->stepsBuffer), "Steps: %d", mcn->stepsNum);
+            TTF_SetTextString(mcn->stepsText, mcn->stepsBuffer, 0);
             mcn->lastStep = now;
         }
     }
@@ -139,6 +179,13 @@ void machineRender(Machine *mcn) {
     SDL_RenderClear(mcn->renderer);
     drawGrid(mcn->grd, mcn->renderer, mcn->windowWidth, mcn->windowHeight,
              mcn->cellWidth, mcn->cellHeight);
+
+
+    TTF_DrawRendererText(mcn->algText, mcn->cellWidth * COLS * 1.02, mcn->windowHeight / 50);
+    TTF_DrawRendererText(mcn->algNameText, mcn->cellWidth * COLS * 1.15, mcn->windowHeight / 50);
+    TTF_DrawRendererText(mcn->stepsText, mcn->cellWidth * COLS * 1.02, mcn->windowHeight / 50 + 100);
+
+
     SDL_RenderPresent(mcn->renderer);
 }
 //CLEAR

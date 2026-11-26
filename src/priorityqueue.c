@@ -3,7 +3,7 @@
 #include <string.h>
 
 void PQinitQueue(PrioQueue *pq) {
-	memset(pq->nodes, 0, ROWS * COLS);
+	memset(pq->nodes, 0, sizeof(pq->nodes));
 	pq->size = 0;
 	pq->index = 0;
 }
@@ -53,7 +53,7 @@ void PQenqueue(PrioQueue *pq, AstarNode nd) {
 AstarNode PQdequeue(PrioQueue *pq) {
 	if (!pq->size) {
 		printf("Priority queue is empty\n");
-		return (AstarNode){67, 67, 67, 67}; //JUST HOPE THIS NEVER FAILS
+		return (AstarNode){67, 67, 67}; //JUST HOPE THIS NEVER FAILS
 	}
 	AstarNode node = pq->nodes[0];
     pq->nodes[0] = pq->nodes[--pq->size];
@@ -64,7 +64,7 @@ AstarNode PQdequeue(PrioQueue *pq) {
 AstarNode PQpeek(PrioQueue *pq) {
 	if (!pq->size) {
         printf("Priority queue is empty\n");
-        return (AstarNode){67, 67, 67, 67}; //JUST HOPE THIS NEVER FAILS
+        return (AstarNode){67, 67, 67}; //JUST HOPE THIS NEVER FAILS
     }
     return pq->nodes[0];
 }

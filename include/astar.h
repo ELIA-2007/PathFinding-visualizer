@@ -11,9 +11,10 @@ typedef struct {
 	BOOL finished;
 	PrioQueue pq;
 	float g[COLS][ROWS];
+	BOOL closed[COLS][ROWS];
 	Coord parents[COLS][ROWS];
 
 } AstarState;
 
 void initAstar(AstarState *state, grid grd, int startX, int startY);
-BOOL aStar(grid grd, AstarState *state, int endX, int endY);
+BOOL aStar(grid grd, AstarState *state, int endX, int endY, int *steps);

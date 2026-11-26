@@ -9,7 +9,7 @@ void initBFS(BFSState *state, grid grd, int startX, int startY) {
     enqueue(&state->q, firstNode);
 }
 
-BOOL bfs(grid grd, BFSState *state) { //STEPS (RETURN 0 IF FINISHED, 1 IF NOT)
+BOOL bfs(grid grd, BFSState *state, int *steps) { //STEPS (RETURN 0 IF FINISHED, 1 IF NOT)
 	if (isEmpty(&state->q) || state->finished) return FALSE;
 
 	//POSSILE MOVES (RIGHT LEFT UP DOWN)
@@ -29,6 +29,7 @@ BOOL bfs(grid grd, BFSState *state) { //STEPS (RETURN 0 IF FINISHED, 1 IF NOT)
 		Cell *nextCell = &grd[next.x][next.y];
 
 		if (*nextCell == empty) { //IF ITS EMPTY ENQUEUE THAT AND MARK THAT AS VISITED
+			(*steps)++;
 			*nextCell = visited;
 			enqueue(&state->q, next);
 		}

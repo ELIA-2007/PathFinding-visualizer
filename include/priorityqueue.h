@@ -3,7 +3,7 @@
 
 typedef struct {
 	int x, y;
-	float g, f;
+	float f;
 } AstarNode;
 
 typedef struct {

@@ -8,7 +8,7 @@ static SDL_Color cellColor(Cell c) {
         case end:     return (SDL_Color){255, 0, 0, 255};
         case wall:    return (SDL_Color){200, 200, 200, 255};
         case visited: return (SDL_Color){100, 40, 100, 255};
-        case path:    return (SDL_Color){100, 180, 180, 255};
+        case path:    return (SDL_Color){255, 215, 0, 255};
         case empty:   return (SDL_Color){40, 40, 100, 255};
         default:      return (SDL_Color){0, 0, 255, 255};
     }
