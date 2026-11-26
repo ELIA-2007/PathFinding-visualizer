@@ -1,5 +1,7 @@
 # PathFinding
 
+**WARNING: this project is not finished yet** --installation, compilation and usage may be tedious (daily commits and updates)
+
 A real-time, interactive pathfinding visualizer written in **C** using **SDL3** and **SDL3_ttf**. It lets you draw obstacles on a grid, choose between Breadth-First Search (BFS) and A* Search, and watch the selected algorithm explore the grid and reconstruct a route from a randomly placed start cell to a destination.
 
 ## Table of contents
